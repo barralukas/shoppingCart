@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import { BsSearch } from 'react-icons/bs';
+import fetchProducts from '../../api/fetchProducts';
+import AppContext from '../../context/AppContext';
 
 function SearchBar() {
   const [searchValue, setSearchValue] = useState('');
+  const { setProducts, setLoading } = useContext(AppContext);
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const products = await fetchProducts(searchValue);
+    setProducts(products);
+    setLoading(false);
+    setSearchValue('');
+  };
 
   return ( 
-    <form className="flex bg-white w-full max-w-lg justify-between shadow-md gap-3 pr-3">
+    <form className="flex bg-white w-full max-w-lg justify-between shadow-md gap-3 pr-3" onSubmit={handleSearch}>
+      {name}
       <input 
         type="search"
         placeholder="Buscar produtos"

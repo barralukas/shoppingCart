@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import propTypes from 'prop-types';
 
 import { BsFillCartPlusFill } from 'react-icons/bs';
 import './ProductCard.css';
 import formatCurrency from '../../utils/formatCurrency';
+import AppContext from '../../context/AppContext';
 
 function ProductCard({ data }) {
   const { title, thumbnail, price } = data;
+  const { cartItems, setCartItems } = useContext(AppContext);
+
+  const handleAddCart = () => setCartItems([...cartItems, data]);
 
   return (
     <section className="w-full max-w-xs bg-white flex flex-col cursor-pointer my-0 mx-auto relative hover:shadow-lg product-card">
@@ -19,7 +23,11 @@ function ProductCard({ data }) {
         <h2 className="text-3xl font-normal block mb-3">{formatCurrency(price, 'BRL')}</h2>
         <h2 className="text-base font-medium text-black/50">{title}</h2>
       </div>
-      <button type="button" className="absolute top-0 right-0 w-11 h-11 mx-4 my-3 text-cart hidden items-center justify-center rounded-full bg-white/80 text-2xl cursor-pointer button__add-cart">
+      <button 
+        type="button" 
+        className="absolute top-0 right-0 w-11 h-11 mx-4 my-3 text-cart hidden items-center justify-center rounded-full bg-white/80 text-2xl cursor-pointer button__add-cart"
+        onClick={handleAddCart}  
+      >
         <BsFillCartPlusFill />
       </button>
     </section>
@@ -30,6 +38,5 @@ export default ProductCard;
 
 ProductCard.propTypes = {
   data: propTypes.shape({
-
   }),
 }.isRequired;
